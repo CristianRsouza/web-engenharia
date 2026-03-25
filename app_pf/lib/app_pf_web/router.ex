@@ -19,7 +19,7 @@ defmodule AppPfWeb.Router do
 
   scope "/", AppPfWeb do
     pipe_through :browser
-
+    live "/dashboard", DashboardLive
     get "/", PageController, :home
   end
 

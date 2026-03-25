@@ -8,17 +8,16 @@ defmodule AppPf.Application do
   @impl true
   def start(_type, _args) do
     children = [
-      AppPfWeb.Telemetry,
-      AppPf.Repo,
-      {Ecto.Migrator,
-       repos: Application.fetch_env!(:app_pf, :ecto_repos), skip: skip_migrations?()},
-      {DNSCluster, query: Application.get_env(:app_pf, :dns_cluster_query) || :ignore},
-      {Phoenix.PubSub, name: AppPf.PubSub},
-      # Start a worker by calling: AppPf.Worker.start_link(arg)
-      # {AppPf.Worker, arg},
-      # Start to serve requests, typically the last entry
-      AppPfWeb.Endpoint
-    ]
+  WCoreWeb.Telemetry,
+  WCore.Repo,
+  {Phoenix.PubSub, name: WCore.PubSub},
+
+  # 👇 ADICIONAR AQUI
+  WCore.Telemetry.Ingestor,
+  WCore.Telemetry.WriteBehind,
+
+  WCoreWeb.Endpoint
+]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
